@@ -1,14 +1,32 @@
 #pragma once
 
-#include "../IPlaybackDevice.h"
+#include "../../scheduling/ITimedExecutable.h"
+#include "../../sensors/IGnssInsSensor.h"
+#include "../../tools/parsing/FileStreamLineParser.h"
+#include "../../tools/parsing/ThreadedStreamLineParser.h"
 
-namespace sp::playback
+namespace sp::playback::devices
 {
   using namespace types;
+  using namespace std::chrono_literals;
 
-  class GnssInsSensorPlaybackDevice : public IPlaybackDevice
+  class GnssInsSensorPlaybackDevice : public scheduling::ITimedExecutable, public sensors::IGnssInsSensor
   {
   public:
-    virtual std::optional<Timepoint> onEvent() override;
+    GnssInsSensorPlaybackDevice(std::filesystem::path sensorDataFile_);
+
+    virtual void setDataCallback(DataCallback&& callback_) override;
+
+  private:
+    using Record = sensors::data::GnssInsRecord;
+    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record>, 20>;
+
+    virtual scheduling::NextTimepoint getStartTime() override;
+    virtual scheduling::NextTimepoint onExecute(Timepoint currentTime_) override;
+
+    static constexpr Duration FRENQUENCY = 20ms;
+
+    DataCallback  _callback;
+    Parser        _parser;
   };
 }

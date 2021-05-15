@@ -1,13 +1,16 @@
 #include "TimedExecutor.h"
 
-#include <algorithm>
+#include "../common/log.h"
+#include "../tools/time_conversion.h"
 
 using namespace sp::types;
+using namespace std::chrono_literals;
 
 namespace sp::scheduling
 {
-  TimedExecutor::TimedExecutor()
-    : _running(false)
+  TimedExecutor::TimedExecutor(double executionTimeMultiplier_)
+    : _executionTimeMultiplier(executionTimeMultiplier_)
+    , _running(false)
   {
   }
 
@@ -16,71 +19,98 @@ namespace sp::scheduling
     stop();
   }
 
-  TimedExecutor::TimedRunnable& TimedExecutor::addRunnable(TimedRunnable&& runnable_, std::optional<Timepoint> startTime_)
+  void TimedExecutor::registerExecutable(ITimedExecutable& executable_)
   {
-    _runnables.emplace_back(std::move(runnable_), startTime_);
-    return _runnables.back().first;
+    _executables.emplace_back(executable_);
   }
 
   void TimedExecutor::start()
   {
     std::scoped_lock<std::mutex> guard{_mutex};
-    if (!_running)
+    if (!_running.load() && !_executables.empty())
     {
-      _running = true;
-      const auto currentTime = Clock::now();
-      for (auto& runnable : _runnables)
+      _running.store(true);
+      std::vector<ExecutableRef> _executablesWithNoStartTime;
+      NextTimepoint minStartTime;
+      for (auto& executable : _executables)
       {
-        _runnableSchedule.emplace(runnable.second ? runnable.second.value() : currentTime, _runnables.back().first);
+        auto startTime = executable.get().getStartTime();
+        if (startTime)
+        {
+          minStartTime ?
+            minStartTime = std::max(minStartTime.value(), startTime.value()) : minStartTime = startTime;
+          _schedule.emplace(startTime.value(), executable);
+        }
+        else
+        {
+          _executablesWithNoStartTime.push_back(executable);
+        }
+      }
+
+      const auto currentTime = Clock::now();
+      for (auto& executable : _executablesWithNoStartTime)
+      {
+        _schedule.emplace(minStartTime ? minStartTime.value() : currentTime, executable);
       }
       _thread = std::make_unique<std::thread>([this] { run(); });
     }
   }
 
-  void TimedExecutor::wait()
-  {
-    std::scoped_lock<std::mutex> guard{_mutex};
-    if (_running)
-    {
-      if (_thread && _thread->joinable()) { _thread->join(); }
-      _thread.reset();
-    }
-  }
-  
   void TimedExecutor::stop()
   {
+    stop(false);
+  }
+
+  void TimedExecutor::waitRunnablesAndStop()
+  {
+    stop(true);
+  }
+  
+  void TimedExecutor::stop(bool waitRunnableFinish_)
+  {
     std::scoped_lock<std::mutex> guard{_mutex};
-    if (_running)
+    if (_running.load())
     {
-      _running = false;
+      _running.store(waitRunnableFinish_);
       if (_thread && _thread->joinable()) { _thread->join(); }
       _thread.reset();
+      _running.store(false);
     }
   }
 
   void TimedExecutor::run()
   {
-    while (_running && !_runnableSchedule.empty())
+    while (_running)
     {
-      auto nextIt = _runnableSchedule.begin();
-      const auto currentTime = Clock::now();
-      const auto nextTime = nextIt->first;
-      if (currentTime >= nextTime)
+      auto scheduleEntry = _schedule.top();
+      _schedule.pop();
+      try
       {
-        auto& func = nextIt->second.get();
-        _runnableSchedule.erase(nextIt);
-        auto nextTime = func(currentTime);
+        auto nextTime = scheduleEntry._executable.get().onExecute(scheduleEntry._timepoint);
         if (nextTime)
         {
-          _runnableSchedule.emplace(nextTime.value(), func);
+          _schedule.emplace(nextTime.value(), scheduleEntry._executable);
         }
-        std::this_thread::yield();
       }
-      else
+      catch (std::exception& e_)
       {
-        std::this_thread::sleep_for(nextTime - currentTime);
+        logError("Exception received from onExecute: ", e_.what());
       }
-      nextIt = _runnableSchedule.begin();
+      if (_schedule.empty()) [[unlikely]]
+      {
+        return;
+      }
+      auto nextDuration = getMultipliedDuration(scheduleEntry._timepoint, _schedule.top()._timepoint);
+      std::this_thread::sleep_for(nextDuration);
     }
+  }
+
+  Duration TimedExecutor::getMultipliedDuration(Timepoint from_, Timepoint to_) const
+  {
+    if (_executionTimeMultiplier < 0.001 || to_ <= from_)
+    {
+      return Duration{0};
+    }
+    return Duration{static_cast<int64_t>((to_ - from_).count() * _executionTimeMultiplier)};
   }
 }
