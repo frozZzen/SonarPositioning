@@ -23,11 +23,11 @@ namespace sp::sensors::data
 
 namespace std
 {
-  static ostream& operator<<(ostream& stream_, const ::sp::sensors::data::GnssInsRecord& record_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::sensors::data::GnssInsRecord& record_)
   {
-    return stream_ << "Roll: " << record_._roll << ", Pitch: " << record_._pitch <<
+    return stream_ << "GnssInsRecord{Roll: " << record_._roll << ", Pitch: " << record_._pitch <<
       ", Heading: " << record_._heading << ", Latitude: " << record_._latitude <<
       ", Longitude: " << record_._longitude << ", Altitude: " << record_._altitude <<
-      ", Heave: " << record_._heave;
+      ", Heave: " << record_._heave << '}';
   }
 }

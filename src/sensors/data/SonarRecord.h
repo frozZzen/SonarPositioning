@@ -20,6 +20,8 @@ namespace sp::sensors::data
   {
     using Samples = std::vector<SonarSampleRecord>;
 
+    static constexpr size_t EXPECTED_SAMPLE_COUNT = 512;
+
     int       _samplingRate = 78'125;
     Timepoint _timestamp;
     Samples   _samples;
@@ -28,15 +30,15 @@ namespace sp::sensors::data
 
 namespace std
 {
-  static ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SonarSampleRecord& record_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SonarSampleRecord& record_)
   {
     return stream_ << "Angle: " << record_._angle << ", SampleIndex: " << record_._sampleIndex;
   }
 
-  static ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SonarRecord& record_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SonarRecord& record_)
   {
     using namespace sp::tools;
-    stream_ << "Timestamp: " << toString(record_._timestamp) << ", Samples: [";
+    stream_ << "SonarSampleRecord{Timestamp: " << toString(record_._timestamp) << ", Samples: [";
     for (size_t i = 0; i < record_._samples.size() - 1; ++i)
     {
       const auto& sample = record_._samples[i];
@@ -46,6 +48,6 @@ namespace std
     {
       stream_ << '(' << record_._samples.back() << ')';
     }
-    return stream_ << ']';
+    return stream_ << ']}';
   }
 }

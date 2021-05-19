@@ -18,5 +18,5 @@ namespace sp::types
   //These could be Boost.Units
   using Radian = double;
   using Meter = double;
-  using MeterPerSeccond = double;
+  using MeterPerSecond = double;
 }

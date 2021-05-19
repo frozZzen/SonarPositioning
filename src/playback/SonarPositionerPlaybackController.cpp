@@ -32,6 +32,6 @@ namespace sp::playback
 
   void SonarPositionerPlaybackController::waitPlaybackAndStop()
   {
-    _executor.waitRunnablesAndStop();
+    _executor.waitExecutablesAndStop();
   }
 }

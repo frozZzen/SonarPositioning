@@ -1,5 +1,7 @@
 #include "SonarPositioner.h"
 
+#include "CoordinateCalculator.h"
+#include "geographic_types.h"
 #include "../common/log.h"
 
 using namespace std::chrono_literals;
@@ -17,31 +19,43 @@ namespace sp::positioning
       [this](auto record_) { onSoundSpeedSensorData(std::move(record_)); });
   }
 
+  void SonarPositioner::setDataCallback(DataCallback&& callback_)
+  {
+    _callback = std::move(callback_);
+  }
+
   void SonarPositioner::onGnssInsSensorData(GnssInsRecord record_)
   {
-    logDebug("GnssInsRecord: ", record_);
+    logDebug(record_);
     _lastGnssRecord = std::move(record_);
   }
   
   void SonarPositioner::onSonarSensorData(SonarRecord record_)
   {
-    logDebug("SonarRecord: ", record_);
-    if (!_isDataConsistent) [[unlikely]]
+    logDebug(record_);
+    if (!_isDataConsistent || !_callback) [[unlikely]]
     {
       _isDataConsistent = _lastGnssRecord && _currSoundSpeedRecord;
       return;
     }
-    for (const auto& sample : record_._samples)
-    {
-      auto elapsedTime = 1.0 * sample._sampleIndex / record_._samplingRate;
-      auto traveledDistance = _currSoundSpeedRecord.value()._speed * elapsedTime;
-      logInfo("traveledDistance: ", traveledDistance);
-    }
+
+    //TODO: interpolate sound speed based on the time parameter (will need data caching)
+    auto soundSpeedGetter = [this](auto) {
+      return _currSoundSpeedRecord.value()._speed;
+    };
+
+    const auto& gnss = _lastGnssRecord.value();
+    const auto sonarPos = GeoPos{gnss._latitude, gnss._longitude, gnss._altitude};
+    const auto sonarAngle = Angle3d{gnss._roll, gnss._pitch, gnss._heading};
+
+    auto positions = calculateSonarSampleCoordinates(record_, sonarPos, sonarAngle, soundSpeedGetter);
+
+    _callback(sonarPos, std::move(positions));
   }
 
   void SonarPositioner::onSoundSpeedSensorData(SoundSpeedRecord record_)
   {
-    logInfo("SoundSpeedRecord: ", record_);
+    logDebug(record_);
     _currSoundSpeedRecord = std::move(record_);
   }
 }

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scheduling\TimedExecutor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="playback\devices\GnssInsSensorPlaybackDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,6 +36,12 @@
     <ClCompile Include="tools\time_conversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="positioning\CoordinateCalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\scheduling\TimedExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="playback\devices\GnssInsSensorPlaybackDevice.h">
@@ -51,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scheduling\TimedExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sensors\IGnssInsSensor.h">
@@ -72,9 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sensors\data\SonarRecord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scheduling\ITimedExecutable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="positioning\SonarPositioner.h">
@@ -114,6 +111,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sensors\data\parsing\SonarRecordParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\math\math3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\math\math3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="positioning\CoordinateCalculator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\scheduling\ITimedExecutable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\scheduling\TimedExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="positioning\geographic_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

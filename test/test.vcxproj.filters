@@ -2,15 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="scheduling\TimedExecutor.cpp" />
     <ClCompile Include="tools\ObjectRepo.cpp" />
     <ClCompile Include="tools\SonarPositioner.cpp" />
     <ClCompile Include="tools\thread_safe\MessageQueue.cpp" />
     <ClCompile Include="tools\parsing\StreamLineParser.cpp" />
+    <ClCompile Include="tools\scheduling\TimedExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="scheduling\TimedExecutorHelpers.h" />
+    <ClInclude Include="tools\scheduling\TimedExecutorHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

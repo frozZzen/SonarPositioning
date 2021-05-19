@@ -4,6 +4,8 @@
 #include <common/Context.h>
 #include <positioning/SonarPositioner.h>
 
+#include <GeographicLib/GeoCoords.hpp>
+
 using namespace sp;
 using namespace sp::playback;
 using namespace sp::playback::devices;
@@ -25,6 +27,17 @@ TEST(SonarPositionerDemo, DemoOnly)
 
   SonarPositionerPlaybackController controller{controllerConfig};
   SonarPositioner positioner{context};
+
+  auto dataCallback = [](const GeoPos sonarPos_, const std::vector<GeoPos>& positions_) {
+    logInfo("Sonar Geodetic: ", sonarPos_);
+    for (const auto& pos : positions_)
+    {
+      GeographicLib::GeoCoords geoCoords{pos._lat, pos._lon};
+      logInfo("Geodetic: ", pos);
+      logInfo("UTMUPS: ", geoCoords.UTMUPSRepresentation(false));
+    }
+  };
+  positioner.setDataCallback(dataCallback);
 
   controller.start();
   controller.waitPlaybackAndStop();

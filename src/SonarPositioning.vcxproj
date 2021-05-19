@@ -86,14 +86,21 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GEOGRAPHICLIB_SHARED_LIB=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Geographic_d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -101,9 +108,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GEOGRAPHICLIB_SHARED_LIB=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,19 +119,32 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Geographic_d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GEOGRAPHICLIB_SHARED_LIB=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Geographic_d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -131,9 +152,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GEOGRAPHICLIB_SHARED_LIB=0</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +163,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Geographic_d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common\log.cpp" />
@@ -148,19 +176,24 @@
     <ClCompile Include="playback\devices\SonarSensorPlaybackDevice.cpp" />
     <ClCompile Include="playback\devices\SoundSpeedSensorPlaybackDevice.cpp" />
     <ClCompile Include="playback\SonarPositionerPlaybackController.cpp" />
-    <ClCompile Include="scheduling\TimedExecutor.cpp" />
+    <ClCompile Include="positioning\CoordinateCalculator.cpp" />
+    <ClCompile Include="tools\scheduling\TimedExecutor.cpp" />
     <ClCompile Include="positioning\SonarPositioner.cpp" />
     <ClCompile Include="tools\time_conversion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Context.h" />
     <ClInclude Include="common\log.h" />
+    <ClInclude Include="positioning\CoordinateCalculator.h" />
     <ClInclude Include="sensors\data\parsing\GnssInsRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SonarRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SoundSpeedRecord.h" />
+    <ClInclude Include="positioning\geographic_types.h" />
+    <ClInclude Include="tools\math\math3d.h" />
+    <ClInclude Include="tools\math\math3d.hpp" />
     <ClInclude Include="tools\parsing\ThreadedStreamLineParser.h" />
     <ClInclude Include="positioning\SonarPositioner.h" />
-    <ClInclude Include="scheduling\ITimedExecutable.h" />
+    <ClInclude Include="tools\scheduling\ITimedExecutable.h" />
     <ClInclude Include="tools\thread_safe\MessageQueue.h" />
     <ClInclude Include="tools\ObjectRepo.h" />
     <ClInclude Include="common\types.h" />
@@ -168,7 +201,7 @@
     <ClInclude Include="playback\devices\SonarSensorPlaybackDevice.h" />
     <ClInclude Include="playback\devices\SoundSpeedSensorPlaybackDevice.h" />
     <ClInclude Include="playback\SonarPositionerPlaybackController.h" />
-    <ClInclude Include="scheduling\TimedExecutor.h" />
+    <ClInclude Include="tools\scheduling\TimedExecutor.h" />
     <ClInclude Include="sensors\data\GnssInsRecord.h" />
     <ClInclude Include="sensors\data\SonarRecord.h" />
     <ClInclude Include="sensors\data\SoundSpeedRecord.h" />

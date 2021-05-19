@@ -8,9 +8,11 @@
 
 namespace sp::sensors::data::parsing
 {
-  static std::optional<SonarRecord> parseSonarRecord(std::istream& stream_)
+  inline std::optional<SonarRecord> parseSonarRecord(std::istream& stream_)
   {
     SonarRecord record;
+    record._samples.reserve(SonarRecord::EXPECTED_SAMPLE_COUNT);
+
     double time;
     stream_ >> time;
     record._timestamp = tools::toTimepoint(time);

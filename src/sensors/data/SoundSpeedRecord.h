@@ -11,14 +11,14 @@ namespace sp::sensors::data
   struct SoundSpeedRecord
   {
     Timepoint       _timestamp;
-    MeterPerSeccond _speed;
+    MeterPerSecond  _speed;
   };
 }
 
 namespace std
 {
-  static ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SoundSpeedRecord& record_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::sensors::data::SoundSpeedRecord& record_)
   {
-    return stream_ << "Speed: " << record_._speed;
+    return stream_ << "SoundSpeedRecord{Speed: " << record_._speed << '}';
   }
 }
