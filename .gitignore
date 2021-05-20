@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/src/3rd_party_libs/GeographicLib/lib/Geographic-i.lib
+/src/3rd_party_libs/GeographicLib/lib/Geographic_d-i.lib
+/src/3rd_party_libs/GeographicLib/lib/Geographic.lib
+/src/3rd_party_libs/GeographicLib/lib/Geographic_d.lib
