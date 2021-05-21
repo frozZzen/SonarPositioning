@@ -342,3 +342,4 @@ healthchecksdb
 /src/3rd_party_libs/GeographicLib/lib/Geographic_d-i.lib
 /src/3rd_party_libs/GeographicLib/lib/Geographic.lib
 /src/3rd_party_libs/GeographicLib/lib/Geographic_d.lib
+/test/output_data/out.txt
