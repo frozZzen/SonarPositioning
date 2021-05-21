@@ -36,10 +36,13 @@
     <ClCompile Include="tools\time_conversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="positioning\CoordinateCalculator.cpp">
+    <ClCompile Include="positioning\coord_calc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tools\scheduling\TimedExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\geographic\types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,7 +122,7 @@
     <ClInclude Include="tools\math\math3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="positioning\CoordinateCalculator.h">
+    <ClInclude Include="positioning\coord_calc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tools\scheduling\ITimedExecutable.h">
@@ -128,7 +131,7 @@
     <ClInclude Include="tools\scheduling\TimedExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="positioning\geographic_types.h">
+    <ClInclude Include="tools\geographic\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

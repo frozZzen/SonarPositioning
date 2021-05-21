@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../common/types.h"
-#include "../tools/math/math3d.h"
+#include "../../common/types.h"
+#include "../math/math3d.h"
 
 #include <ostream>
+#include <string>
 
-namespace sp::positioning
+namespace sp::tools::geographic
 {
   using namespace types;
   using namespace tools::math;
@@ -48,27 +49,45 @@ namespace sp::positioning
 
     Meter _alt;
   };
+
+  struct UtmUps : CartFlatPos
+  {
+    UtmUps(const GeoFlatPos& pos_);
+    UtmUps(Radian lat_, Radian lon_);
+    UtmUps(int zone_, bool northp_, Radian x_, Radian y_)
+      : CartFlatPos(x_, y_), _zone(zone_), _northp(northp_) {}
+
+    std::string zone() const;
+
+    int   _zone;
+    bool  _northp;
+  };
 }
 
 namespace std
 {
-  inline ostream& operator<<(ostream& stream_, const ::sp::positioning::CartFlatPos& pos_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::tools::geographic::CartFlatPos& pos_)
   {
     return stream_ << "CartFlatPos{x: " << pos_._x << ", y: " << pos_._y << '}';
   }
 
-  inline ostream& operator<<(ostream& stream_, const ::sp::positioning::CartPos& pos_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::tools::geographic::CartPos& pos_)
   {
     return stream_ << "CartPos{x: " << pos_._x << ", y: " << pos_._y << ", z: " << pos_._z << '}';
   }
 
-  inline ostream& operator<<(ostream& stream_, const ::sp::positioning::GeoFlatPos& pos_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::tools::geographic::GeoFlatPos& pos_)
   {
     return stream_ << "GeoFlatPos{Lat: " << pos_._lat << ", Lon: " << pos_._lon << '}';
   }
 
-  inline ostream& operator<<(ostream& stream_, const ::sp::positioning::GeoPos& pos_)
+  inline ostream& operator<<(ostream& stream_, const ::sp::tools::geographic::GeoPos& pos_)
   {
     return stream_ << "GeoPos{Lat: " << pos_._lat << ", Lon: " << pos_._lon << ", Alt: " << pos_._alt << '}';
+  }
+
+  inline ostream& operator<<(ostream& stream_, const ::sp::tools::geographic::UtmUps& pos_)
+  {
+    return stream_ << "UtmUps{" << pos_.zone() << ' ' << pos_._x << ' ' << pos_._y << '}';
   }
 }

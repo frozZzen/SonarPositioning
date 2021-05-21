@@ -48,15 +48,15 @@ namespace sp::tools::math
   }
 
   template <typename T>
-  Matrix3d<T> compose<T>(const Matrix3d<T>& m1_, const Matrix3d<T>& m2_)
+  Matrix3d<T> compose<T>(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_)
   {
     return {m2_ | m1_._c1, m2_ | m1_._c2, m2_ | m1_._c3};
   }
 
   template <typename T>
-  Matrix3d<T> operator*<T>(const Matrix3d<T>& m1_, const Matrix3d<T>& m2_)
+  Matrix3d<T> operator*<T>(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_)
   {
-    return compose(m1_, m2_);
+    return compose(m2_, m1_);
   }
 
   template <typename T>

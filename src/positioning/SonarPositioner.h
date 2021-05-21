@@ -1,8 +1,8 @@
 #pragma once
 
-#include "geographic_types.h"
 #include "../common/Context.h"
 #include "../playback/SonarPositionerPlaybackController.h"
+#include "../tools/geographic/types.h"
 
 #include <functional>
 #include <vector>
@@ -12,6 +12,7 @@ namespace sp::positioning
   using namespace types;
   using namespace sensors;
   using namespace sensors::data;
+  using namespace tools::geographic;
 
   class SonarPositioner
   {

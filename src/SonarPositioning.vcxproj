@@ -156,6 +156,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,7 +165,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Geographic_d.lib</AdditionalDependencies>
+      <AdditionalDependencies>Geographic.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>F:\Development\Projects\NORBIT\SonarPositioning\src\3rd_party_libs\GeographicLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -176,7 +177,8 @@
     <ClCompile Include="playback\devices\SonarSensorPlaybackDevice.cpp" />
     <ClCompile Include="playback\devices\SoundSpeedSensorPlaybackDevice.cpp" />
     <ClCompile Include="playback\SonarPositionerPlaybackController.cpp" />
-    <ClCompile Include="positioning\CoordinateCalculator.cpp" />
+    <ClCompile Include="positioning\coord_calc.cpp" />
+    <ClCompile Include="tools\geographic\types.cpp" />
     <ClCompile Include="tools\scheduling\TimedExecutor.cpp" />
     <ClCompile Include="positioning\SonarPositioner.cpp" />
     <ClCompile Include="tools\time_conversion.cpp" />
@@ -184,11 +186,11 @@
   <ItemGroup>
     <ClInclude Include="common\Context.h" />
     <ClInclude Include="common\log.h" />
-    <ClInclude Include="positioning\CoordinateCalculator.h" />
+    <ClInclude Include="positioning\coord_calc.h" />
     <ClInclude Include="sensors\data\parsing\GnssInsRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SonarRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SoundSpeedRecord.h" />
-    <ClInclude Include="positioning\geographic_types.h" />
+    <ClInclude Include="tools\geographic\types.h" />
     <ClInclude Include="tools\math\math3d.h" />
     <ClInclude Include="tools\math\math3d.hpp" />
     <ClInclude Include="tools\parsing\ThreadedStreamLineParser.h" />

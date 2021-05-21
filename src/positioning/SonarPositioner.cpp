@@ -1,9 +1,9 @@
 #include "SonarPositioner.h"
 
-#include "CoordinateCalculator.h"
-#include "geographic_types.h"
+#include "coord_calc.h"
 #include "../common/log.h"
 
+using namespace sp::tools::geographic;
 using namespace std::chrono_literals;
 
 namespace sp::positioning
@@ -48,7 +48,7 @@ namespace sp::positioning
     const auto sonarPos = GeoPos{gnss._latitude, gnss._longitude, gnss._altitude};
     const auto sonarAngle = Angle3d{gnss._roll, gnss._pitch, gnss._heading};
 
-    auto positions = calculateSonarSampleCoordinates(record_, sonarPos, sonarAngle, soundSpeedGetter);
+    auto positions = coord_calc::calculateSonarSampleCoordinates(record_, sonarPos, sonarAngle, soundSpeedGetter);
 
     _callback(sonarPos, std::move(positions));
   }

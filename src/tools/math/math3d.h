@@ -12,7 +12,7 @@ namespace sp::tools::math
   {
     Angle3d(Radian roll_, Radian pitch_, Radian yaw_);
 
-    double _x, _y, _z;
+    Radian _x, _y, _z;
   };
 
   template <typename T>
@@ -36,8 +36,8 @@ namespace sp::tools::math
   template <typename T> Vector3d<T> transform(const Matrix3d<T>& m_, const Vector3d<T>& v_);
   template <typename T> Vector3d<T> operator|(const Matrix3d<T>& m_, const Vector3d<T>& v_);
 
-  template <typename T> Matrix3d<T> compose(const Matrix3d<T>& m1_, const Matrix3d<T>& m2_);
-  template <typename T> Matrix3d<T> operator*(const Matrix3d<T>& m1_, const Matrix3d<T>& m2_);
+  template <typename T> Matrix3d<T> compose(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_);
+  template <typename T> Matrix3d<T> operator*(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_);
 
   template <typename T> Matrix3d<T> getRotationMatrix(Angle3d angle_);
 
