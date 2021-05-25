@@ -80,7 +80,7 @@ namespace sp::tools::parsing
             _queue.close();
             return;
           }
-          _queue.push(record.value());
+          _queue.push(std::move(record.value()));
           std::this_thread::yield();
         }
       }

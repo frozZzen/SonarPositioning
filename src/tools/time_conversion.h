@@ -5,7 +5,7 @@
 #include <chrono>
 #include <string>
 
-namespace sp::tools
+namespace sp::tools::time_conversion
 {
   using namespace types;
 
@@ -14,6 +14,8 @@ namespace sp::tools
 
   Timepoint toTimepoint(double time_);
 
+  Duration toDuration(double seconds_);
+
   std::string toString(SysClock::time_point time_);
   std::string toString(Timepoint time_);
 }
@@ -21,7 +23,7 @@ namespace sp::tools
 #include <iostream>
 
 template <typename FromTimestamp, typename ToTimestamp>
-void sp::tools::timepointCast<FromTimestamp, ToTimestamp>(const FromTimestamp& from_, ToTimestamp& to_)
+void sp::tools::time_conversion::timepointCast<FromTimestamp, ToTimestamp>(const FromTimestamp& from_, ToTimestamp& to_)
 {
   const auto fromNow = typename FromTimestamp::clock::now();
   const auto toNow = typename ToTimestamp::clock::now();

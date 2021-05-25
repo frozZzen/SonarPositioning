@@ -20,7 +20,8 @@ namespace sp::playback::devices
     _prevRecord = _parser.getNextData();
     if (_prevRecord)
     {
-      return _prevRecord.value()._timestamp;
+      calculateTimestamp(*_prevRecord.value());
+      return _prevRecord.value()->_timestamp;
     }
     return std::nullopt;
   }
@@ -29,9 +30,10 @@ namespace sp::playback::devices
   {
     if (_parser.hasMoreData() && _callback && _prevRecord)
     {
+      const auto prevTimestamp = _prevRecord.value()->_timestamp;
       try
       {
-        _callback(_prevRecord.value());
+        _callback(std::move(_prevRecord.value()));
       }
       catch (std::exception& e_)
       {
@@ -40,11 +42,21 @@ namespace sp::playback::devices
       auto record = _parser.getNextData();
       if (record)
       {
-        Duration diff = record.value()._timestamp - _prevRecord.value()._timestamp;
-        _prevRecord = std::move(record);
+        calculateTimestamp(*record.value());
+        Duration diff = record.value()->_timestamp - prevTimestamp;
+        _prevRecord = std::move(record.value());
         return currentTime_ + diff;
       }
     }
     return std::nullopt;
+  }
+
+  void SonarSensorPlaybackDevice::calculateTimestamp(Record& record_)
+  {
+    const auto maxSample = std::max_element(record_._samples.begin(), record_._samples.end(),
+      [](const auto& s1_, const auto& s2_) { return s1_._sampleIndex < s2_._sampleIndex; });
+    const auto maxSampleDelay = 1.0 * maxSample->_sampleIndex / record_._samplingRate;
+
+    record_._timestamp = record_._samplingStartTime + tools::time_conversion::toDuration(maxSampleDelay);
   }
 }

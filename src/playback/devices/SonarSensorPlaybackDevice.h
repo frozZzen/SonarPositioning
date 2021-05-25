@@ -18,16 +18,18 @@ namespace sp::playback::devices
     virtual void setDataCallback(DataCallback&& callback_) override;
 
   private:
-    using Record = sensors::data::SonarRecord;
-    using RecordOpt = std::optional<Record>;
-    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record>, 100>;
+    using Record        = sensors::data::SonarRecord;
+    using RecordPtrOpt  = std::optional<Record::Ptr>;
+    using Parser        = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record::Ptr>, 100>;
 
     virtual scheduling::NextTimepoint getStartTime() override;
     virtual scheduling::NextTimepoint onExecute(Timepoint currentTime_) override;
 
+    void calculateTimestamp(Record& record_);
+
     DataCallback  _callback;
     Parser        _parser;
-    RecordOpt     _prevRecord;
+    RecordPtrOpt  _prevRecord;
     NextTimepoint _initTime;
   };
 }

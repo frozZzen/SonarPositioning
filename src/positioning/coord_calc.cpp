@@ -12,9 +12,9 @@ namespace sp::positioning::coord_calc
     const SonarRecord& record_, const SonarSampleRecord& sample_, const SoundSpeedGetter& getSoundSpeed_)
   {
     const auto elapsedTimeInSeconds = 1.0 * sample_._sampleIndex / record_._samplingRate;
-    const auto elapsedDuration = Duration{static_cast<int64_t>(elapsedTimeInSeconds * Duration::period::den)};
+    const auto elapsedDuration = tools::time_conversion::toDuration(elapsedTimeInSeconds);
 
-    const auto soundSpeed = getSoundSpeed_(record_._timestamp + elapsedDuration);
+    const auto soundSpeed = getSoundSpeed_(record_._samplingStartTime + elapsedDuration);
     const auto traveledDistance = soundSpeed * elapsedTimeInSeconds;
     logDebug("traveledDistance: ", traveledDistance, ", angle: ", sample_._angle,
       ", elapsedTimeInSec: ", elapsedTimeInSeconds, "soundSpeed: ", soundSpeed);
@@ -37,11 +37,13 @@ namespace sp::positioning::coord_calc
   }
 
   std::vector<GeoPos> calculateSonarSampleCoordinates(
-    const SonarRecord& record_, const GeoPos& sonarPos_, const Angle3d& sonarAngle_, const SoundSpeedGetter& getSoundSpeed_)
+    const SonarRecord& record_, const SonarPosAngleGetter& getSonarPosAngle_, const SoundSpeedGetter& getSoundSpeed_)
   {
+    const auto& [sonarPos, sonarAngle] = getSonarPosAngle_(record_._samplingStartTime);
+
     CartPos refPos;
     GeographicLib::LocalCartesian cart;
-    cart.Forward(sonarPos_._lat, sonarPos_._lon, sonarPos_._alt, refPos._x, refPos._y, refPos._z);
+    cart.Forward(sonarPos._lat, sonarPos._lon, sonarPos._alt, refPos._x, refPos._y, refPos._z);
     logDebug("Geodetic to local cartesian: ", pos_, " => ", refPos);
 
     std::vector<GeoPos> samplePositions;
@@ -50,7 +52,7 @@ namespace sp::positioning::coord_calc
     for (const auto& sample : record_._samples)
     {
       const auto relativePos = calculateSamplePosRelativeToSonar(record_, sample, getSoundSpeed_);
-      const auto realPos = calculateGlobalSamplePosition(refPos, relativePos, sonarAngle_);
+      const auto realPos = calculateGlobalSamplePosition(refPos, relativePos, sonarAngle);
       logDebug("Relative pos to global pos: ", relativePos, " => ", realPos);
 
       GeoPos realGeoPos;

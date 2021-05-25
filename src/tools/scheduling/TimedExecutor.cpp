@@ -31,14 +31,11 @@ namespace sp::scheduling
     {
       _running.store(true);
       std::vector<ExecutableRef> _executablesWithNoStartTime;
-      NextTimepoint minStartTime;
       for (auto& executable : _executables)
       {
         auto startTime = executable.get().getStartTime();
         if (startTime)
         {
-          minStartTime ?
-            minStartTime = std::min(minStartTime.value(), startTime.value()) : minStartTime = startTime;
           _schedule.emplace(startTime.value(), executable);
         }
         else
@@ -47,10 +44,10 @@ namespace sp::scheduling
         }
       }
 
-      if (!minStartTime) { minStartTime = Clock::now(); }
+      Timepoint minStartTime = !_schedule.empty() ? _schedule.top()._timepoint : Clock::now();
       for (auto& executable : _executablesWithNoStartTime)
       {
-        _schedule.emplace(minStartTime.value(), executable);
+        _schedule.emplace(minStartTime, executable);
       }
       _thread = std::make_unique<std::thread>([this] { run(); });
     }

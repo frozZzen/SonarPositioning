@@ -8,82 +8,94 @@ namespace sp::tools::math
   }
 
   template <typename T>
-  Vector3d<T>::Vector3d()
-    : _x(0), _y(0), _z(0)
-  {
-  }
-
-  template <typename T>
   Vector3d<T>::Vector3d(T x_, T y_, T z_)
     : _x(x_), _y(y_), _z(z_)
   {
   }
 
   template <typename T>
-  Vector3d<T> operator+<T>(const Vector3d<T>& v1_, const Vector3d<T>& v2_)
+  bool Vector3d<T>::operator==(const Vector3d<T>& o_) const
   {
-    return {v1_._x + v2_._x, v1_._y + v2_._y, v1_._z + v2_._z};
+    return Compare{_x} == o_._x && Compare{_y} == o_._y && Compare{_z} == o_._z;
   }
 
   template <typename T>
-  Vector3d<T> operator-<T>(const Vector3d<T>& v1_, const Vector3d<T>& v2_)
+  bool Vector3d<T>::operator!=(const Vector3d<T>& o_) const
   {
-    return {v1_._x - v2_._x, v1_._y - v2_._y, v1_._z - v2_._z};
+    return !operator==(o_);
   }
+}
 
-  template <typename T>
-  Vector3d<T> transform<T>(const Matrix3d<T>& m_, const Vector3d<T>& v_)
-  {
-    return {
-      v_._x * m_._c1._x + v_._y * m_._c2._x + v_._z * m_._c3._x,
-      v_._x * m_._c1._y + v_._y * m_._c2._y + v_._z * m_._c3._y,
-      v_._x * m_._c1._z + v_._y * m_._c2._z + v_._z * m_._c3._z,
-    };
-  }
+template <typename T>
+sp::tools::math::Vector3d<T> operator+<T>(const sp::tools::math::Vector3d<T>& v1_, const sp::tools::math::Vector3d<T>& v2_)
+{
+  return {v1_._x + v2_._x, v1_._y + v2_._y, v1_._z + v2_._z};
+}
 
-  template <typename T>
-  Vector3d<T> operator|<T>(const Matrix3d<T>& m_, const Vector3d<T>& v_)
-  {
-    return transform(m_, v_);
-  }
+template <typename T>
+sp::tools::math::Vector3d<T> operator-<T>(const sp::tools::math::Vector3d<T>& v1_, const sp::tools::math::Vector3d<T>& v2_)
+{
+  return {v1_._x - v2_._x, v1_._y - v2_._y, v1_._z - v2_._z};
+}
 
-  template <typename T>
-  Matrix3d<T> compose<T>(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_)
-  {
-    return {m2_ | m1_._c1, m2_ | m1_._c2, m2_ | m1_._c3};
-  }
+template <typename T>
+sp::tools::math::Vector3d<T> operator*(T scalar_, const sp::tools::math::Vector3d<T>& v_)
+{
+  return {scalar_ * v_._x, scalar_ * v_._y, scalar_ * v_._z};
+}
 
-  template <typename T>
-  Matrix3d<T> operator*<T>(const Matrix3d<T>& m2_, const Matrix3d<T>& m1_)
-  {
-    return compose(m2_, m1_);
-  }
+template <typename T>
+sp::tools::math::Vector3d<T> transform<T>(const sp::tools::math::Matrix3d<T>& m_, const sp::tools::math::Vector3d<T>& v_)
+{
+  return {
+    v_._x * m_._c1._x + v_._y * m_._c2._x + v_._z * m_._c3._x,
+    v_._x * m_._c1._y + v_._y * m_._c2._y + v_._z * m_._c3._y,
+    v_._x * m_._c1._z + v_._y * m_._c2._z + v_._z * m_._c3._z,
+  };
+}
 
-  template <typename T>
-  Matrix3d<T> getRotationMatrix<T>(Angle3d angle_)
-  {
-    using namespace std;
-    const double cosx = cos(angle_._x), sinx = sin(angle_._x);
-    const double cosy = cos(angle_._y), siny = sin(angle_._y);
-    const double cosz = cos(angle_._z), sinz = sin(angle_._z);
-    return {
-      {cosz * cosy,                      sinz * cosy,                      -siny       },
-      {cosz * siny * sinx - sinz * cosx, sinz * siny * sinx + cosz * cosx,  cosy * sinx},
-      {cosz * siny * cosx + sinz * sinx, sinz * siny * cosx - cosz * sinx,  cosy * cosx},
-    };
-  }
+template <typename T>
+sp::tools::math::Vector3d<T> operator|<T>(const sp::tools::math::Matrix3d<T>& m_, const sp::tools::math::Vector3d<T>& v_)
+{
+  return transform(m_, v_);
+}
 
-  template <typename T>
-  Vector3d<T> rotate<T>(const Vector3d<T>& v_, Angle3d angle_)
-  {
-    return getRotationMatrix<T>(angle_) | v_;
-  }
+template <typename T>
+sp::tools::math::Matrix3d<T> compose<T>(const sp::tools::math::Matrix3d<T>& m2_, const sp::tools::math::Matrix3d<T>& m1_)
+{
+  return {m2_ | m1_._c1, m2_ | m1_._c2, m2_ | m1_._c3};
+}
 
-  template <typename T>
-  Vector3d<T> operator|<T>(const Vector3d<T>& v_, Angle3d angle_)
-  {
-    return rotate(v_, angle_);
-  }
+template <typename T>
+sp::tools::math::Matrix3d<T> operator*<T>(const sp::tools::math::Matrix3d<T>& m2_, const sp::tools::math::Matrix3d<T>& m1_)
+{
+  return compose(m2_, m1_);
+}
+
+template <typename T>
+sp::tools::math::Matrix3d<T> getRotationMatrix<T>(sp::tools::math::Angle3d angle_)
+{
+  using namespace std;
+  const double cosx = cos(angle_._x), sinx = sin(angle_._x);
+  const double cosy = cos(angle_._y), siny = sin(angle_._y);
+  const double cosz = cos(angle_._z), sinz = sin(angle_._z);
+  return {
+    {cosz * cosy,                      sinz * cosy,                      -siny       },
+    {cosz * siny * sinx - sinz * cosx, sinz * siny * sinx + cosz * cosx,  cosy * sinx},
+    {cosz * siny * cosx + sinz * sinx, sinz * siny * cosx - cosz * sinx,  cosy * cosx},
+  };
+}
+
+template <typename T>
+sp::tools::math::Vector3d<T> rotate<T>(const sp::tools::math::Vector3d<T>& v_, sp::tools::math::Angle3d angle_)
+{
+  return getRotationMatrix<T>(angle_) | v_;
+}
+
+template <typename T>
+sp::tools::math::Vector3d<T> operator|<T>(const sp::tools::math::Vector3d<T>& v_, sp::tools::math::Angle3d angle_)
+{
+  return rotate(v_, angle_);
 }
 
 namespace std

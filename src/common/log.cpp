@@ -16,7 +16,7 @@ namespace sp::log_details
 
   void logHeader(const char* severity_)
   {
-    std::cout << severity_ << " [" << tools::toString(SysClock::now()) << "] - ";
+    std::cout << severity_ << " [" << tools::time_conversion::toString(SysClock::now()) << "] - ";
   }
 
   void logTail(const char* file_, size_t line_)

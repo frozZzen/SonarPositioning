@@ -27,10 +27,10 @@ namespace sp::playback::devices
       auto record = _parser.getNextData();
       if (record)
       {
-        record.value()._timestamp = currentTime_;
+        record.value()->_timestamp = currentTime_;
         try
         {
-          _callback(record.value());
+          _callback(std::move(record.value()));
         }
         catch (std::exception& e_)
         {

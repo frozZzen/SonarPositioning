@@ -2,6 +2,7 @@
 
 #include "../../common/types.h"
 
+#include <memory>
 #include <ostream>
 
 namespace sp::sensors::data
@@ -10,6 +11,8 @@ namespace sp::sensors::data
 
   struct GnssInsRecord
   {
+    using Ptr = std::unique_ptr<GnssInsRecord>;
+
     Timepoint _timestamp;
     Radian    _roll;
     Radian    _pitch;

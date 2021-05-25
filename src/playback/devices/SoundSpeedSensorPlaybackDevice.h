@@ -19,7 +19,7 @@ namespace sp::playback::devices
 
   private:
     using Record = sensors::data::SoundSpeedRecord;
-    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record>, 100>;
+    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record::Ptr>, 100>;
 
     virtual scheduling::NextTimepoint getStartTime() override;
     virtual scheduling::NextTimepoint onExecute(Timepoint currentTime_) override;

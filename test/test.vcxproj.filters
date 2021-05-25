@@ -7,6 +7,8 @@
     <ClCompile Include="tools\thread_safe\MessageQueue.cpp" />
     <ClCompile Include="tools\parsing\StreamLineParser.cpp" />
     <ClCompile Include="tools\scheduling\TimedExecutor.cpp" />
+    <ClCompile Include="tools\math\math3d.cpp" />
+    <ClCompile Include="tools\math\fp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

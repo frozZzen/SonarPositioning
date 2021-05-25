@@ -190,7 +190,9 @@
     <ClInclude Include="sensors\data\parsing\GnssInsRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SonarRecordParser.h" />
     <ClInclude Include="sensors\data\parsing\SoundSpeedRecord.h" />
+    <ClInclude Include="sensors\ISensor.h" />
     <ClInclude Include="tools\geographic\types.h" />
+    <ClInclude Include="tools\math\fp.h" />
     <ClInclude Include="tools\math\math3d.h" />
     <ClInclude Include="tools\math\math3d.hpp" />
     <ClInclude Include="tools\parsing\ThreadedStreamLineParser.h" />

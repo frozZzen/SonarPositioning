@@ -7,10 +7,10 @@
 
 namespace sp::sensors::data::parsing
 {
-  inline std::optional<SoundSpeedRecord> parseSoundSpeedRecord(std::istream& stream_)
+  inline std::optional<SoundSpeedRecord::Ptr> parseSoundSpeedRecord(std::istream& stream_)
   {
-    SoundSpeedRecord record;
-    stream_ >> record._speed;
+    auto record = std::make_unique<SoundSpeedRecord>();
+    stream_ >> record->_speed;
     return record;
   }
 }

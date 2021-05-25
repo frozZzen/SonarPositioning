@@ -24,13 +24,17 @@ namespace sp::positioning
     void setDataCallback(DataCallback&& callback_);
 
   private:
-    void onGnssInsSensorData(GnssInsRecord record_);
-    void onSonarSensorData(SonarRecord record_);
-    void onSoundSpeedSensorData(SoundSpeedRecord record_);
+    using GnssInsRecordPtrOpt = std::optional<GnssInsRecord::Ptr>;
+    using SoundSpeedRecordPtrOpt = std::optional<SoundSpeedRecord::Ptr>;
 
-    DataCallback                    _callback;
-    std::optional<GnssInsRecord>    _lastGnssRecord;
-    std::optional<SoundSpeedRecord> _currSoundSpeedRecord;
-    bool                            _isDataConsistent;
+
+    void onGnssInsSensorData(GnssInsRecord::Ptr record_);
+    void onSonarSensorData(SonarRecord::Ptr record_);
+    void onSoundSpeedSensorData(SoundSpeedRecord::Ptr record_);
+
+    DataCallback            _callback;
+    GnssInsRecordPtrOpt     _lastGnssRecord;
+    SoundSpeedRecordPtrOpt  _currSoundSpeedRecord;
+    bool                    _isDataConsistent;
   };
 }

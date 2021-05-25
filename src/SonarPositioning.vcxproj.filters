@@ -134,5 +134,11 @@
     <ClInclude Include="tools\geographic\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sensors\ISensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\math\fp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

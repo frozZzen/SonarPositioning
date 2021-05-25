@@ -14,8 +14,9 @@ namespace sp::positioning::coord_calc
   using namespace tools::math;
   using namespace types;
 
-  using SoundSpeedGetter = std::function<MeterPerSecond(Timepoint)>;
+  using SoundSpeedGetter = std::function<MeterPerSecond (Timepoint)>;
+  using SonarPosAngleGetter = std::function<std::pair<GeoPos, Angle3d> (Timepoint)>;
 
   std::vector<GeoPos> calculateSonarSampleCoordinates(
-    const SonarRecord& record_, const GeoPos& sonarPos_, const Angle3d& sonarAngle_, const SoundSpeedGetter& getSoundSpeed_);
+    const SonarRecord& record_, const SonarPosAngleGetter& getSonarPosAngle_, const SoundSpeedGetter& getSoundSpeed_);
 }

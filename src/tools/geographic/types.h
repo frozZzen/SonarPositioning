@@ -13,7 +13,7 @@ namespace sp::tools::geographic
 
   struct CartFlatPos
   {
-    CartFlatPos() : _x(0), _y(0) {}
+    CartFlatPos() = default;
     CartFlatPos(Meter x_, Meter y_)
       : _x(x_), _y(y_) {}
 
@@ -22,7 +22,7 @@ namespace sp::tools::geographic
 
   struct CartPos : CartFlatPos
   {
-    CartPos() : CartFlatPos(), _z(0) {}
+    CartPos() = default;
     CartPos(Vector3d<Meter> v_) : CartFlatPos(v_._x, v_._y), _z(v_._z) {}
     CartPos(Meter x_, Meter y_, Meter z_)
       : CartFlatPos(x_, y_), _z(z_) {}
@@ -34,7 +34,7 @@ namespace sp::tools::geographic
 
   struct GeoFlatPos
   {
-    GeoFlatPos() : _lat(0), _lon(0) {}
+    GeoFlatPos() = default;
     GeoFlatPos(double lat_, double lon_)
       : _lat(lat_), _lon(lon_) {}
 
@@ -43,7 +43,7 @@ namespace sp::tools::geographic
 
   struct GeoPos : GeoFlatPos
   {
-    GeoPos() : GeoFlatPos(), _alt(0) {}
+    GeoPos() = default;
     GeoPos(double lat_, double lon_, Meter alt_)
       : GeoFlatPos(lat_, lon_), _alt(alt_) {}
 

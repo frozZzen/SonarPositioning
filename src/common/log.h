@@ -7,11 +7,11 @@
 #define LOG_LEVEL INFO_LOG_LEVEL
 
 #if LOG_LEVEL > 0
-#define logError(...) log_details::log("[ERROR]", 1, __FILE__, __LINE__, __VA_ARGS__)
+#define logError(...) sp::log_details::log("[ERROR]", 1, __FILE__, __LINE__, __VA_ARGS__)
 #if LOG_LEVEL > 1
-#define logInfo(...)  log_details::log("[INFO] ", 2, __FILE__, __LINE__, __VA_ARGS__)
+#define logInfo(...)  sp::log_details::log("[INFO] ", 2, __FILE__, __LINE__, __VA_ARGS__)
 #if LOG_LEVEL > 2
-#define logDebug(...) log_details::log("[DEBUG]", 3, __FILE__, __LINE__, __VA_ARGS__)
+#define logDebug(...) sp::log_details::log("[DEBUG]", 3, __FILE__, __LINE__, __VA_ARGS__)
 #else
 #define logDebug(...)
 #endif

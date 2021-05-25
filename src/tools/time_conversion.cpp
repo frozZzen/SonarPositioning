@@ -4,15 +4,20 @@
 #include <iomanip>
 #include <sstream>
 
-namespace sp::tools
+namespace sp::tools::time_conversion
 {
   Timepoint toTimepoint(double time_)
   {
     Timepoint result;
     int64_t seconds = static_cast<int64_t>(time_);
     const auto sysTime = SysClock::time_point{std::chrono::seconds{seconds}};
-    tools::timepointCast(sysTime, result);
+    tools::time_conversion::timepointCast(sysTime, result);
     return result + Duration{static_cast<int64_t>((time_ - seconds) * Duration::period::den)};
+  }
+
+  Duration toDuration(double seconds_)
+  {
+    return Duration{static_cast<int64_t>(seconds_ * Duration::period::den)};
   }
 
   std::string toString(SysClock::time_point time_)

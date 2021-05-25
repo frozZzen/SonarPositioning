@@ -19,7 +19,7 @@ namespace sp::playback::devices
 
   private:
     using Record = sensors::data::GnssInsRecord;
-    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record>, 20>;
+    using Parser = tools::parsing::ThreadedStreamLineParser<tools::parsing::FileStreamLineParser<Record::Ptr>, 20>;
 
     virtual scheduling::NextTimepoint getStartTime() override;
     virtual scheduling::NextTimepoint onExecute(Timepoint currentTime_) override;
