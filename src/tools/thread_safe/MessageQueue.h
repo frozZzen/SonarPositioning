@@ -41,8 +41,10 @@ namespace sp::tools::thread_safe
   template <typename MessageT>
   void MessageQueue<Message>::push(MessageT&& message_)
   {
-    std::unique_lock<std::mutex> guard{_mutex};
-    _queue.push(std::forward<MessageT>(message_));
+    {
+      std::unique_lock<std::mutex> guard{_mutex};
+      _queue.push(std::forward<MessageT>(message_));
+    }
     _queueFill.notify_one();
   }
 
@@ -52,10 +54,7 @@ namespace sp::tools::thread_safe
     std::unique_lock<std::mutex> guard{_mutex};
     while (_isOpen.load() || !_queue.empty())
     {
-      while (_queue.empty() && _isOpen.load())
-      {
-        _queueFill.wait(guard);
-      }
+      _queueFill.wait(guard, [this] { return !_queue.empty() || !_isOpen.load(); });
       if (!_queue.empty())
       {
         Message message = std::move(_queue.front());
@@ -75,8 +74,10 @@ namespace sp::tools::thread_safe
   template <typename Message>
   inline void MessageQueue<Message>::close()
   {
-    std::unique_lock<std::mutex> guard{_mutex};
-    _isOpen.store(false);
+    {
+      std::unique_lock<std::mutex> guard{_mutex};
+      _isOpen.store(false);
+    }
     _queueFill.notify_one();
   }
 
